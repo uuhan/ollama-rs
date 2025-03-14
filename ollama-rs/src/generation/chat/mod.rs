@@ -128,11 +128,11 @@ impl Ollama {
         let s = stream! {
             let mut result = String::new();
 
-            while let Some(item) = resp_stream.try_next().await.unwrap() {
+            while let Some(item) = resp_stream.try_next().await? {
                 let msg_part = item.clone().message.content;
 
                 if item.done {
-        history.lock().unwrap().push(ChatMessage::assistant(result.clone()));
+                    history.lock().unwrap().push(ChatMessage::assistant(result.clone()));
                 } else {
                     result.push_str(&msg_part);
                 }
